@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PackageManager.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,10 +23,18 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        PageContainerFrame.Content = new PackagesPage();
     }
 
     private void CloseBtn_Click(object sender, RoutedEventArgs e)
     {
         Application.Current.Shutdown();
     }
+
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+    {
+        base.OnMouseLeftButtonDown(e);
+        DragMove();
+    }
+
 }
