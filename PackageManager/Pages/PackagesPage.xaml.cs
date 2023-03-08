@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PackageDataContext.Entities;
+using PackageManager.ViewModels;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PackageManager.Pages;
 /// <summary>
@@ -22,5 +14,30 @@ public partial class PackagesPage : Page
     public PackagesPage()
     {
         InitializeComponent();
+        DataContext = new PackageViewModel();
+    }
+
+    private async void SaveBtn_Click(object sender, RoutedEventArgs e)
+    {
+        var viewModel = DataContext as PackageViewModel;
+        if (viewModel == null)
+        {
+            MessageBox.Show("Something went wrong! Please try again later.");
+            return;
+        }
+        var packagesUI = PackagesDataGrip.Items.OfType<Package>().ToList();
+        await viewModel.SaveCommand(packagesUI);
+    }
+
+    private async void CancelBtn_Click(object sender, RoutedEventArgs e)
+    {
+        var viewModel = DataContext as PackageViewModel;
+        if (viewModel == null)
+        {
+            MessageBox.Show("Something went wrong! Please try again later.");
+            return;
+        }
+
+        await viewModel.CancelCommand();
     }
 }

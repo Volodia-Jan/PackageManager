@@ -3,7 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:PackageManager.Pages"
+      xmlns:local="clr-namespace:PackageManager.Pages" 
+      xmlns:viewmodels="clr-namespace:PackageManager.ViewModels"
+      d:DataContext="{d:DesignInstance Type=viewmodels:PackageViewModel}"
       mc:Ignorable="d" 
       d:DesignHeight="410" d:DesignWidth="800"
       Title="PackagesPage">
@@ -58,19 +60,29 @@
         
         <!-- Main content-->
         <DataGrid Grid.Row="0" 
-                  ItemsSource="{Binding Items}">
+                  ItemsSource="{Binding Packages}"
+                  AutoGenerateColumns="False"
+                  x:Name="PackagesDataGrip">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
-                <DataGridTextColumn Header="Sender Name" Binding="{Binding SenderName}"/>
-                <DataGridTextColumn Header="Owner Name" Binding="{Binding OwnerName}"/>
+                <DataGridTextColumn Header="Sender" Binding="{Binding SenderName}"/>
+                <DataGridTextColumn Header="Receiver" Binding="{Binding ReceiverName}"/>
                 <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
                 <DataGridTextColumn Header="Weight" Binding="{Binding Weight}"/>
             </DataGrid.Columns>
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="Padding" Value="10"/>
+                    <Setter Property="Padding" Value="5"/>
+                    <Setter Property="FontSize" Value="15"/>
                     <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#8c8b8b"/>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </DataGrid.CellStyle>
             <DataGrid.RowStyle>
@@ -78,6 +90,15 @@
                     <Setter Property="Height" Value="40"/>
                     <Setter Property="Background" Value="#F2F2F2"/>
                     <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Background" Value="#2E2E2E"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#5e5e5e"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#8c8b8b"/>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.ColumnHeaderStyle>
@@ -88,6 +109,11 @@
                     <Setter Property="Foreground" Value="White"/>
                     <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="Padding" Value="10"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#5e5e5e"/>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </DataGrid.ColumnHeaderStyle>
         </DataGrid>
@@ -102,12 +128,16 @@
             <Button Content="Save"
                     Margin="0,0,20,0"
                     Width="70"
-                    Style="{StaticResource OperationsButton}"/>
+                    Style="{StaticResource OperationsButton}"
+                    x:Name="SaveBtn" 
+                    Click="SaveBtn_Click"/>
             
             <Button Content="Cancel"
                     Margin="20,0,0,0"
                     Width="70"
-                    Style="{StaticResource OperationsButton}"/>
+                    Style="{StaticResource OperationsButton}"
+                    x:Name="CancelBtn"
+                    Click="CancelBtn_Click"/>
         </StackPanel>
     </Grid>
 </Page>
